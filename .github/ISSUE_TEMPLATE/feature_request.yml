@@ -1,0 +1,78 @@
+name: Feature request
+description: Suggest an idea for Karen Assistant
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, check that:
+        - This isn't already an existing issue.
+        - It isn't already a documented design decision (no mouse control,
+          Windows only, no auto-update, etc.).
+        - It isn't a security issue — those go through the Security tab.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: |
+        Describe the situation, not the solution. The maintainer may know a
+        better path than the one you have in mind.
+      placeholder: |
+        When I ask Karen to summarize a long article, the vision model reads
+        the whole page instead of just the article body. I want to narrow the
+        region somehow.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: How would you like Karen to handle it?
+      description: A proposed solution, a rough sketch, or just the desired outcome.
+      placeholder: |
+        Maybe a `--region` flag on the voice command, or a "summarize just
+        the paragraph I'm looking at" intent.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Any workarounds, or other ways you've tried to solve this?
+      placeholder: |
+        I tried copy-pasting the text into the chat box, but the OCR accuracy
+        is better when Karen reads it herself.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Which area does this touch?
+      options:
+        - Voice / TTS / STT
+        - Brain / LLM
+        - Desktop agent / UIAutomation
+        - Toolkit / tools
+        - GUI / theming
+        - Scheduled tasks
+        - Documentation
+        - Build / packaging
+        - Something else
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmation
+      options:
+        - label: I've searched existing issues and this isn't a duplicate
+          required: true
+        - label: I've read the README's "Known limitations" section
+          required: true
+        - label: This isn't a security concern (those go through the Security tab)
+          required: true
