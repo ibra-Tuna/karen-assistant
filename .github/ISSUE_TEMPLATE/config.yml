@@ -1,0 +1,20 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/ibra-Tuna/karen-assistant/security/advisories/new
+    about: >
+      Please report security issues privately via GitHub's vulnerability
+      reporting, not as public issues. See SECURITY.md for what's in scope.
+
+  - name: 💬 Ask a question or share a setup
+    url: https://github.com/ibra-Tuna/karen-assistant/discussions
+    about: >
+      Usage questions, "is this normal?", or "here's my setup" all go in
+      Discussions. Bug reports and feature requests go in Issues.
+
+  - name: 📚 Read the README first
+    url: https://github.com/ibra-Tuna/karen-assistant#quick-start
+    about: >
+      Setup steps, configuration, known limitations, and the full command
+      reference are covered in the README. Most setup questions are answered there.
