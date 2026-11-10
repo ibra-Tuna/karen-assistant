@@ -9,32 +9,44 @@
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-9d4edd)](#requirements)
 [![Status](https://img.shields.io/badge/Status-v1.0.0-9d4edd)](#)
 
-[Overview](#what-is-karen) · [Features](#features) · [Requirements](#requirements) · [Quick start](#quick-start) · [Commands](#what-you-can-say) · [Architecture](#architecture)
+[Why Karen?](#why-karen) · [Features](#features) · [Quick start](#quick-start) · [Commands](#what-you-can-say) · [Architecture](#how-it-works)
 
 </div>
 
 <p align="center">
-  <img src="assets/screenshot.png" alt="Karen Assistant GUI — dark purple orb, chat history, and live context panel" width="880">
+  <img src="assets/screenshot.png" alt="Karen Assistant — dark purple orb, chat history, live context panel" width="880">
 </p>
 
 ---
 
-## What is Karen?
+## Why Karen?
 
-Karen is a desktop AI assistant that you **talk to** (or type to) on
-Windows. She speaks back with an offline neural voice, understands what
-you say with offline speech recognition, and can open apps, type text,
-press keys, click UI elements, and schedule tasks — all through
-**Windows UI Automation and keyboard input**.
+Most desktop AI assistants are one of two things: a chatbot window that
+can't touch your machine, or an automation script that can't think. Karen
+is both — **she understands natural language and acts on it**, using real
+UI controls instead of pixel coordinates.
 
-She has **no mouse access by design**. Every interaction is a real
-control (button, field, menu) found by name or identifier, or a keyboard
-shortcut. This makes her fast, deterministic, and testable — and means
-she can't accidentally drag your files around or click the wrong pixel.
+Three things make her different from the pack:
 
-She's also context-aware. With **Screen glance** enabled, she periodically
-reads your screen so you can ask *"what's this?"* or *"summarize that"*
-without describing anything first.
+**She never touches the mouse.** Every click is a real Windows UI
+Automation control found by name or identifier. Every keystroke is a real
+keyboard event. This makes her deterministic, testable, and impossible to
+misclick — a huge deal if you've ever watched a GUI-automation tool
+blindly click the wrong button because the layout shifted 3 pixels.
+
+**She runs entirely on your machine.** Kokoro for speech, Whisper for
+transcription, llama.cpp for reasoning — all offline. Optional cloud LLM
+for hard turns, but never required. No telemetry, no data harvesting, no
+"we've updated our privacy policy" emails.
+
+**She answers in under 100 ms when she can.** A fast-path router catches
+`type X`, `open Y`, `press ctrl+s`, `screenshot`, `mute`, `next track`,
+`volume 50`, `lock screen` before any LLM is consulted. You get instant
+response, zero token spend.
+
+If you want a general-purpose chatbot, use ChatGPT. If you want an
+assistant that *actually does things on your computer* without uploading
+your screen to a server, Karen is for you.
 
 ---
 
@@ -53,25 +65,12 @@ without describing anything first.
 
 ---
 
-## Requirements
-
-- **Windows 10 or 11 (64-bit).** The desktop-control layer uses Windows
-  UI Automation — macOS and Linux are not supported.
-- **Python 3.10 – 3.12 (64-bit).** Python 3.13 is not yet supported due
-  to `onnxruntime` wheel availability.
-- **8 GB RAM** minimum. **16 GB** recommended for local models.
-- **NVIDIA GPU with 5+ GB VRAM** for fast local inference.
-  Optional — the app runs on CPU, but local chat will be slow.
-- **A microphone** for voice input. Not required — you can type instead.
-
----
-
 ## Quick start
 
-### 1. Clone and install
+### 1. Install
 
 ```powershell
-git clone https://github.com/USERNAME/karen-assistant.git
+git clone https://github.com/ibra-Tuna/karen-assistant.git
 cd karen-assistant
 
 python -m venv .venv
@@ -87,7 +86,7 @@ pip install -r requirements.txt
 pip install onnxruntime-gpu
 ```
 
-### 2. Run
+### 2. Launch
 
 ```powershell
 python karen.py
@@ -99,27 +98,56 @@ The GUI opens. On first launch you'll see:
 >
 > *"No API key and no local model. Open Settings → AI."*
 
-### 3. Configure
+### 3. Configure your brain
 
-Open **⚙ Settings** (top right) and pick one:
+Open **⚙ Settings** (top right) and pick one path:
 
-**Cloud — easiest, no GPU needed**
+<table>
+<tr>
+<td valign="top" width="33%">
+
+**☁️ Cloud**
+
+No GPU needed.
+Free Groq tier is enough.
 
 1. Settings → AI → Brain mode = **Cloud**
-2. Paste a free Groq key from [console.groq.com/keys](https://console.groq.com/keys)
+2. Paste a key from [console.groq.com/keys](https://console.groq.com/keys)
 3. Settings → Models → download **Kokoro** (~340 MB)
-4. Settings → Voice → click **Test voice**
+4. Settings → Voice → **Test voice**
 
-**Local — fully offline**
+</td>
+<td valign="top" width="33%">
+
+**💻 Local**
+
+Fully offline.
+Needs 5+ GB VRAM.
 
 1. Settings → AI → Brain mode = **Local**
-2. Settings → Models → download **Chat**, **Tool**, and **Router** models
-3. Settings → Models → download **Kokoro** (~340 MB) and a **Whisper** STT model
-4. Settings → Voice → click **Test voice**
+2. Settings → Models → download **Chat**, **Tool**, **Router**
+3. Settings → Models → download **Kokoro** and **Whisper**
+4. Settings → Voice → **Test voice**
 
-**Hybrid — best of both**
+</td>
+<td valign="top" width="33%">
 
-Both of the above. Local for cheap turns, cloud for hard ones — automatic.
+**🔀 Hybrid**
+
+Best of both.
+Automatic fallback.
+
+Both of the above.
+Local for cheap turns,
+cloud for hard ones.
+
+Requires both a key
+and a downloaded
+local model.
+
+</td>
+</tr>
+</table>
 
 ### 4. Talk
 
@@ -130,8 +158,9 @@ it in the box. Karen responds.
 
 ## What you can say
 
-Karen has a fast-path router that fires these commands in under 100 ms —
-no LLM turn, no token spend:
+### ⚡ Instant commands
+
+These fire in under 100 ms — no LLM turn, no token spend:
 
 | Command | What happens |
 |---|---|
@@ -150,8 +179,9 @@ no LLM turn, no token spend:
 | `play` / `pause` | Toggles media |
 | `lock the screen` | Locks Windows |
 
-The **agent** handles multi-step and screen-reading commands. These take
-an LLM turn but are much smarter:
+### 🧠 Agent commands
+
+These take an LLM turn but handle multi-step or screen-reading tasks:
 
 | Command | What happens |
 |---|---|
@@ -161,6 +191,11 @@ an LLM turn but are much smarter:
 | `in notepad type hello into the text area` | Targets a specific field |
 | `reply to that message yes` | Reads the conversation, types, sends |
 | `open chrome and search for cats` | Multi-step with a browser |
+
+### ⏰ Scheduled tasks
+
+| Command | What happens |
+|---|---|
 | `remind me to drink water in 30 minutes` | Schedules a reminder |
 | `at 5pm open spotify` | Schedules a launch |
 | `every day at 9am take a screenshot` | Recurring task |
@@ -169,34 +204,7 @@ an LLM turn but are much smarter:
 
 ---
 
-## Brain modes explained
-
-| Mode | Chat | Local lanes used | Best for |
-|---|---|---|---|
-| **Cloud** | Hosted LLM (Groq by default) | Optional tool + router lanes | Fast, high-quality chat with no local VRAM |
-| **Local** | llama.cpp, Ollama, or LM Studio | Chat + tool + router | Full privacy, offline use, requires GPU |
-| **Hybrid** | Local for simple turns, cloud for hard ones | Chat + tool + router | Mixed workloads, opportunistic |
-
-In **Cloud** and **Hybrid** modes, the local **tool** and **router** lanes
-still run if configured — they classify intent and route function calls
-before hitting the cloud. That saves tokens and latency on every action
-command.
-
----
-
-## Architecture
-
-Four source files:
-
-```
-karen-assistant/
-├── karen.py        ← GUI, voice pipeline, brain, config, model management
-├── agent.py        ← Desktop agent — plans and executes tool calls step by step
-├── toolkit.py      ← Tool surface — UIAutomation, files, shell, web, media, OCR, tasks
-└── tasks.py        ← Scheduled task parser and scheduler
-```
-
-### How it fits together
+## How it works
 
 ```
 User speaks or types
@@ -215,19 +223,82 @@ User speaks or types
   └──────────────┘
 ```
 
-### Design decisions
+Four source files:
 
-- **No mouse.** Every interaction is a real control (found by UIAutomation
-  name or identifier) or a keyboard shortcut. This makes the agent
-  deterministic, testable, and impossible to misclick.
+| File | Role |
+|---|---|
+| `karen.py` | GUI, voice pipeline, brain, config, model management |
+| `agent.py` | Desktop agent — plans and executes tool calls step by step |
+| `toolkit.py` | Tool surface — UIAutomation, files, shell, web, media, OCR, tasks |
+| `tasks.py` | Scheduled task parser and scheduler |
+
+### Why these design choices
+
+- **No mouse, ever.** Every interaction is a real control (found by
+  UIAutomation name or identifier) or a keyboard shortcut. Deterministic,
+  testable, impossible to misclick.
 - **Fast-path before LLM.** Common commands match a regex in `agent.py`
-  and fire immediately — no LLM latency.
+  and fire immediately — no LLM latency, no token spend.
 - **Dual-vote routing.** The router model and the regex must both be wrong
   before a command lands in the wrong lane.
-- **Anti-loop enforcement.** Two identical tool calls in a row block; four
-  consecutive failures abort. No infinite retry spirals.
-- **No telemetry.** Config and memory live on your machine. Nothing is
-  uploaded for training.
+- **Anti-loop enforcement.** Two identical tool calls in a row block;
+  four consecutive failures abort. No infinite retry spirals.
+- **Console-free EXE.** `build.spec` produces a GUI-only binary with the
+  Python runtime bundled in `_internal/`.
+- **No telemetry, ever.** Config and memory live on your machine.
+  Nothing is uploaded for training.
+
+---
+
+## Models used
+
+All models are optional — download the ones you need through the GUI.
+
+| Model | Size | Purpose |
+|---|---|---|
+| **Kokoro** | ~340 MB | Offline neural TTS — Karen's voice |
+| **faster-whisper** (distil-large-v3) | ~1.5 GB | Offline speech recognition |
+| **Chat LLM** (Qwen3.5-4B) | ~2.5 GB | Local reasoning |
+| **Tool LLM** (LFM2.5-1.2B-Nova) | ~900 MB | Local function calling |
+| **Router LLM** (LFM2.5-230M) | ~250 MB | Local intent classification |
+| **Vision** (Qwen2.5-VL 3B) | ~2.5 GB | Screen understanding (optional) |
+
+In **Cloud** and **Hybrid** modes, the local **tool** and **router** lanes
+still run if configured — they classify intent and route function calls
+before hitting the cloud. That saves tokens and latency on every action
+command.
+
+---
+
+## Requirements
+
+| | Minimum | Recommended |
+|---|---|---|
+| **OS** | Windows 10 (64-bit) | Windows 11 |
+| **Python** | 3.10 | 3.12 |
+| **RAM** | 8 GB | 16 GB |
+| **GPU** | Any (CPU mode) | NVIDIA with 5+ GB VRAM |
+| **Disk** | ~500 MB (source) | ~8 GB (with all models) |
+| **Microphone** | Optional | Any USB or built-in |
+
+**Python 3.13 is not yet supported** — `onnxruntime` wheels aren't published for it.
+
+---
+
+## Configuration
+
+All settings live in `karen_config.json` next to the executable (or in
+`%APPDATA%\Karen\` if the install folder is read-only). The app manages
+this file — you rarely need to edit it by hand.
+
+| Settings tab | What you'll find |
+|---|---|
+| **AI** | Brain mode, provider + key, local model path, local lanes, personality |
+| **Voice** | Kokoro voice, pitch, effect, mic, Whisper device, speech detection |
+| **PC control** | Enable PC control, screen reading, vision model, screen glance, agent behavior |
+| **Tasks** | Scheduled task list, natural-language task input |
+| **Models** | One-click downloads: Kokoro, Whisper, chat/tool/router, vision LLM |
+| **Interface** | Theme, accent color, orb palette, animation toggle |
 
 ---
 
@@ -256,23 +327,6 @@ through the GUI on the target machine.
 
 ---
 
-## Configuration
-
-All settings live in `karen_config.json` next to the executable (or in
-`%APPDATA%\Karen\` if the install folder is read-only). The app manages
-this file — you rarely need to edit it by hand.
-
-| Settings tab | What you'll find |
-|---|---|
-| **AI** | Brain mode, provider + key, local model path, local lanes, personality |
-| **Voice** | Kokoro voice, pitch, effect, mic, Whisper device, speech detection |
-| **PC control** | Enable PC control, screen reading, vision model, screen glance, agent behavior |
-| **Tasks** | Scheduled task list, natural-language task input |
-| **Models** | One-click downloads: Kokoro, Whisper, chat/tool/router, vision LLM |
-| **Interface** | Theme, accent color, orb palette, animation toggle |
-
----
-
 ## Known limitations
 
 - **Windows only.** The desktop control layer relies on Windows UI
@@ -290,20 +344,12 @@ this file — you rarely need to edit it by hand.
 
 ---
 
-## Contributing
+## Getting help
 
-Bug reports and feature requests welcome via GitHub Issues. For PRs,
-open one against `main` and describe the change in the description.
-
-Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) before your first PR.
-
----
-
-## Security
-
-Karen can read your screen and control apps — that's the point. See
-[`SECURITY.md`](SECURITY.md) for what's enabled, what's disabled, and how
-to report a vulnerability privately.
+- 🐛 **Found a bug?** Open an [issue](https://github.com/ibra-Tuna/karen-assistant/issues/new/choose) — the template walks you through what to include.
+- 💬 **Question or setup help?** [Discussions](https://github.com/ibra-Tuna/karen-assistant/discussions) is the place.
+- 🔒 **Security concern?** See [`SECURITY.md`](SECURITY.md) — never open a public issue for these.
+- 📖 **Want to contribute?** Read [`CONTRIBUTING.md`](CONTRIBUTING.md) first.
 
 ---
 
@@ -326,4 +372,4 @@ Each dependency retains its own license.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+MIT — see [`LICENSE`](LICENSE). Free to use, modify, and redistribute.
