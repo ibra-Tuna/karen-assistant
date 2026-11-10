@@ -1,0 +1,70 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ---------- PyInstaller build output ----------
+build/
+dist/
+*.manifest
+# Ignore generated per-project specs, but keep OUR build recipe
+*.spec
+!build.spec
+
+# ---------- Models (downloaded per-user via GUI) ----------
+models/
+*.onnx
+*.bin
+*.gguf
+*.pt
+*.pth
+*.safetensors
+*.part
+*.tar.gz
+*.tar
+*.zip
+
+# ---------- User data / config / logs ----------
+karen_config.json
+memory.json
+apps.json
+tasks.json
+pronunciations.json
+groq_key.txt
+karen.log
+stdio.log
+*.log
+
+# ---------- IDE / OS ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Testing ----------
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ---------- Local env ----------
+.env
+.env.local
+.env.*.local
