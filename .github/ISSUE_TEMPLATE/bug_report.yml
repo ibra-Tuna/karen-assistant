@@ -1,0 +1,115 @@
+name: Bug report
+description: Something isn't working the way it should
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The more detail you provide,
+        the faster it can be fixed.
+
+        **Before submitting:**
+        - Search existing issues — this may already be reported.
+        - Check the README's *Known limitations* section.
+        - Redact any API keys in logs before pasting.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the behavior you observed.
+      placeholder: |
+        I said "open spotify" and Karen replied "I couldn't complete that"
+        instead of opening Spotify.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-expected
+    attributes:
+      label: What did you expect?
+      description: What should have happened instead?
+      placeholder: Spotify should have opened and come into focus.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: |
+        How can the maintainer trigger the same bug? Be specific — the exact
+        phrase you said or typed, and any settings you changed.
+      placeholder: |
+        1. Settings → AI → Brain mode = Local
+        2. Press space to start listening
+        3. Say "open spotify"
+        4. Karen responds with "I couldn't complete that"
+        5. karen.log shows: "no window matching 'Spotify'"
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2 (build 26100)
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: Output of `python --version`
+      placeholder: Python 3.12.4
+    validations:
+      required: true
+
+  - type: dropdown
+    id: brain-mode
+    attributes:
+      label: Brain mode
+      options:
+        - Cloud
+        - Local
+        - Hybrid
+    validations:
+      required: true
+
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU (if using Local mode)
+      description: Model and VRAM, e.g. "NVIDIA RTX 4060, 8 GB VRAM"
+      placeholder: NVIDIA RTX 4060, 8 GB VRAM
+    validations:
+      required: false
+
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or version
+      description: Output of `git rev-parse --short HEAD`, or the release version
+      placeholder: "a1b2c3d"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        Paste the last ~50 lines of `karen.log` (next to `karen.py`, or in
+        `%APPDATA%\Karen\`). **Redact any API keys before pasting.**
+      render: text
+      placeholder: |
+        2026-11-10 21:45:32 INFO karen: Starting KAREN
+        2026-11-10 21:45:32 INFO karen: Audio engine initialised (preload=False)
+        2026-11-10 21:45:33 INFO karen: Desktop toolkit ready (68 tools)
+        ...
+    validations:
+      required: false
