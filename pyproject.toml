@@ -1,0 +1,24 @@
+[project]
+name = "karen-assistant"
+version = "1.0.0"
+description = "A local-first Windows voice assistant that controls your PC without the mouse"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.13"
+authors = [
+    { name = "ibra-Tuna" },
+]
+keywords = ["voice-assistant", "windows", "local-llm", "tts", "stt", "uiautomation"]
+
+[project.urls]
+Homepage = "https://github.com/ibra-Tuna/karen-assistant"
+Issues = "https://github.com/ibra-Tuna/karen-assistant/issues"
+Changelog = "https://github.com/ibra-Tuna/karen-assistant/blob/main/CHANGELOG.md"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
