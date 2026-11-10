@@ -1,0 +1,36 @@
+# Core
+PySide6>=6.7
+numpy>=1.26
+sounddevice>=0.4.6
+soundfile>=0.12
+pyloudnorm>=0.1.1
+psutil>=5.9
+httpx>=0.27
+groq>=0.9
+ddgs>=9.0
+
+# TTS
+kokoro-onnx>=0.4
+onnxruntime-gpu>=1.18 ; platform_system == "Windows"
+misaki[en]>=0.8
+phonemizer-fork>=3.3
+espeakng-loader>=0.2
+
+# STT
+faster-whisper>=1.0
+ctranslate2>=4.3
+av>=12.0
+tokenizers>=0.20
+
+# LLM
+llama-cpp-python>=0.3.2
+
+# Desktop control (Windows only)
+uiautomation>=2.0
+pycaw>=20240210
+comtypes>=1.4
+wmi>=1.5
+pytesseract>=0.3
+
+# Misc
+scipy>=1.11
