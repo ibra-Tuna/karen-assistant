@@ -1,0 +1,24 @@
+# Default owners for everything in the repo.
+
+*                               @ibra-Tuna
+
+# Core source files — require a review from the owner for these.
+/karen.py                       @ibra-Tuna
+/agent.py                       @ibra-Tuna
+/toolkit.py                     @ibra-Tuna
+/tasks.py                       @ibra-Tuna
+
+# Infrastructure
+/.github/                       @ibra-Tuna
+/.gitignore                     @ibra-Tuna
+/.gitattributes                 @ibra-Tuna
+/build.spec                     @ibra-Tuna
+/requirements.txt               @ibra-Tuna
+
+# Documentation and security
+/README.md                      @ibra-Tuna
+/CONTRIBUTING.md                @ibra-Tuna
+/CODE_OF_CONDUCT.md             @ibra-Tuna
+/SECURITY.md                    @ibra-Tuna
+/CHANGELOG.md                   @ibra-Tuna
+/LICENSE                        @ibra-Tuna
