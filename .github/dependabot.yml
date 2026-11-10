@@ -1,0 +1,68 @@
+version: 2
+
+updates:
+  # ---- Python dependencies ----
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    reviewers:
+      - "ibra-Tuna"
+    groups:
+      pyside:
+        patterns:
+          - "PySide6*"
+      ml-runtime:
+        patterns:
+          - "onnxruntime*"
+          - "ctranslate2*"
+          - "faster-whisper*"
+          - "llama-cpp-python*"
+          - "kokoro-onnx*"
+      science:
+        patterns:
+          - "numpy*"
+          - "scipy*"
+      audio:
+        patterns:
+          - "sounddevice*"
+          - "soundfile*"
+          - "pyloudnorm*"
+      http:
+        patterns:
+          - "httpx*"
+          - "groq*"
+          - "ddgs*"
+      windows:
+        patterns:
+          - "uiautomation*"
+          - "pycaw*"
+          - "comtypes*"
+          - "wmi*"
+
+  # ---- GitHub Actions versions ----
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+    reviewers:
+      - "ibra-Tuna"
