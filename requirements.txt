@@ -1,6 +1,6 @@
 # Core
 PySide6>=6.7
-numpy>=1.26
+numpy>=2.2.6
 sounddevice>=0.4.6
 soundfile>=0.12
 pyloudnorm>=0.1.1
@@ -33,4 +33,4 @@ wmi>=1.5
 pytesseract>=0.3
 
 # Misc
-scipy>=1.11
+scipy>=1.15.3
