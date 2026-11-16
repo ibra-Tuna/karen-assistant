@@ -10,20 +10,20 @@ groq>=0.9
 ddgs>=9.0
 
 # TTS
-kokoro-onnx>=0.4
-onnxruntime-gpu>=1.18 ; platform_system == "Windows"
+kokoro-onnx>=0.6.1
+onnxruntime-gpu>=1.24.1 ; platform_system == "Windows"
 misaki[en]>=0.8
 phonemizer-fork>=3.3
 espeakng-loader>=0.2
 
 # STT
-faster-whisper>=1.0
-ctranslate2>=4.3
+faster-whisper>=1.2.1
+ctranslate2>=4.9.0
 av>=12.0
 tokenizers>=0.20
 
 # LLM
-llama-cpp-python>=0.3.2
+llama-cpp-python>=0.3.36
 
 # Desktop control (Windows only)
 uiautomation>=2.0
